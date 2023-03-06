@@ -18,16 +18,26 @@ public class Player extends Entity{
 	
 	public final int screenX;
 	public final int screenY;
+	public int hasKey = 0;
+	
 	
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
 		this.keyH = keyH;
 		
+		
+		
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);
 		screenY = gp.screenHeight/2 - (gp.tileSize/2);
-		
-		solidArea = new Rectangle(8, 16, 32, 32);
+
+		solidArea = new Rectangle();
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+		solidArea.width = 20;
+		solidArea.height = 20;
 		
 		setDefaultValues(); 
 		getPlayerImage();
@@ -79,6 +89,10 @@ public class Player extends Entity{
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
 			
+			//CHECK OBJECT COLLISION
+			int objIndex = gp.cChecker.checkObject(this, true);
+			pickUpObject(objIndex);
+			 
 			// IF COLLLISION IS FALSE, PLAYER CAN MOVE
 			if(collisionOn == false) {
 				switch(direction) {
@@ -102,6 +116,46 @@ public class Player extends Entity{
 		}
 		
 	}
+	public void pickUpObject(int i) {
+		if(i != 999) {
+			String objectName = gp.obj[i].name;
+			
+			switch(objectName) {
+			case "Key":
+				gp.playSE(1);
+				hasKey++;
+				gp.obj[i] = null;
+				gp.ui.showMessage("You got a key!");
+				break;
+			case "Door":
+				gp.playSE(3);
+				if(hasKey>0) {
+					gp.obj[i] = null;
+					hasKey--;
+					gp.ui.showMessage("You opened the door!");
+				}
+				else {
+					gp.ui.showMessage("You need a key!");
+				}
+				System.out.println("Key:"+ hasKey);
+				break;
+			case "Boots":
+				gp.playSE(2);
+				speed += 3;
+				gp.obj[i] = null;
+				gp.ui.showMessage("Speed up!");
+				break;
+			case "Chest":
+				gp.ui.gameFinished = true;
+				gp.stopMusic();
+				gp.playSE(4);
+				break;
+				 
+			}
+			
+		}
+	}
+	
 	public void draw(Graphics2D g2) {
 //		g2.setColor(Color.white);
 //		g2.fillRect(x, y, gp.tileSize, gp.tileSize);
