@@ -10,6 +10,7 @@ import object.OBJ_Key;
 
 public class UI {
 	GamePanel gp;
+	Graphics2D g2;
 	Font arial_40, arial_80B;
 	BufferedImage keyImage;
 	public boolean messageOn = false;
@@ -33,16 +34,16 @@ public class UI {
 	}
 	public void draw(Graphics2D g2) {
 		
+		 this.g2 = g2;
+		 g2.setFont(arial_40);
+		
 		if(gameFinished == true) {
-			
-			g2.setFont(arial_40);
-			g2.setColor(Color.white);
 			
 			String text;
 			int textLength;
 			int x;
 			int y;
-		
+			g2.setColor(Color.white);
 			text = "You found the treasure!";
 			textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 			x = gp.screenWidth/2 - textLength/2;
@@ -74,7 +75,21 @@ public class UI {
 			g2.drawImage(keyImage, gp.tileSize/2, gp.tileSize/2, gp.tileSize, gp.tileSize, null);
 			g2.drawString("x " + gp.player.hasKey, 74, 65);
 			
+			if(gp.gameState == gp.pauseState) {
+				g2.setFont(arial_80B);
+				g2.setColor(Color.white);
+				String text = "PAUSED";
+				//int x = getXforCenteredText(text);
+				int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+				int x = gp.screenWidth/2-length/2;
+				
+
+				int y = gp.screenHeight/2;
+				g2.drawString(text, x, y);
+			}
+			
 			//TIME
+			g2.setFont(arial_40);
 			playTime += (double)1/60;
 			g2.drawString("Time:"+dFormat.format(playTime), gp.tileSize*11, 65);
 			
