@@ -1,4 +1,11 @@
  package entity;
+ 
+
+import main.GamePanel;
+
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,6 +17,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 
 public class Player extends Entity{
 	
@@ -52,21 +60,29 @@ public class Player extends Entity{
 	}
 	
 	public void getPlayerImage() { 
-		
-		try { 
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
+		up1 = setup("boy_up_1");
+		up2 = setup("boy_up_2");
+		down1 = setup("boy_down_1");
+		down2 = setup("boy_down_2");
+		left1 = setup("boy_left_1");
+		left2 = setup("boy_left_2");
+		right1 = setup("boy_right_1");
+		right2 = setup("boy_right_2");
+	}
+	public BufferedImage setup(String imageName) {
+		UtilityTool uTool = new UtilityTool();
+		BufferedImage image= null;
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/"+ imageName + ".png"));
+			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+			
 		}catch(IOException e) {
 			e.printStackTrace();
-			
 		}
+		return image;
 	}
+	
+	
 	
 	public void update() {
 		
@@ -128,10 +144,19 @@ public class Player extends Entity{
 				gp.ui.showMessage("You got a key!");
 				break;
 			case "Door":
-				gp.playSE(3);
 				if(hasKey>0) {
-					gp.obj[i] = null;
-					hasKey--;
+					
+							try {
+						gp.obj[i].image = ImageIO.read(getClass().getResourceAsStream("/objects/doorredo2.png"));
+					}catch(IOException e) {
+						e.printStackTrace();
+					}
+					if (gp.obj[i].collision == true) {
+						gp.playSE(3);
+						hasKey--;
+					}
+
+					gp.obj[i].collision = false;
 					gp.ui.showMessage("You opened the door!");
 				}
 				else {
@@ -197,6 +222,6 @@ public class Player extends Entity{
 			}
 			break;
 		}
-		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, screenX, screenY, null);
 	}
 }

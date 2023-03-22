@@ -1,6 +1,7 @@
 package tile;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 public class TileManager {
 
@@ -19,7 +21,7 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		
-		tile = new Tile[10];
+		tile = new Tile[100];
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		getTileImage();
 		loadMap("/maps/world01.txt");
@@ -30,34 +32,89 @@ public class TileManager {
 		
 		try {
 			
+			//base grass tile
 			tile[0] = new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
+			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png"));
+			tile[0].image = tile[0].image.getSubimage(48, 0, 16, 16);
+			BufferedImage scaledImage = new BufferedImage(gp.tileSize, gp.tileSize, tile[0].image.getType());
+			Graphics2D g2 = scaledImage.createGraphics();
+			g2.drawImage(tile[0].image, 0, 0, gp.tileSize, gp.tileSize, null);
+			tile[0].image = scaledImage;
 		
-			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			tile[1].collision = true;
-			 
+			//wall side up
+			setup(14, "wallup&down2", true);
+			
+ 			//wall side up&down
+			setup(1, "wallup&down", true);
+			
+			//wall side right
+			setup(9, "wallright", true);	
+			
+			//wall side left			
+			setup(16, "wallleft", true);
+			
+			//wall corner top left	 
+			setup(10, "wallcornertopleft", true);
+			
+			//wall corner top right
+			setup(11, "wallcornertopright", true);
+			
+			//wall corner bottom left
+			setup(12, "wallcornerbottomleft", true);
+			
+			//wall corner bottom right
+			setup(13, "wallcornerbottomright", true);
+			
+			//tile: wood floor
+			setup(3, "woodfloor", false);
+
+			//tile: tree
+			setup(4, "tree", true);
+			
+			//WATER TILES
 			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
+			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // plain water
+			tile[2].image = tile[2].image.getSubimage(192, 16, 16, 16);
 			tile[2].collision = true;
 			
-			tile[3] = new Tile();
-			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
+			tile[6] = new Tile();
+			tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // top left corner water
+			tile[6].image = tile[6].image.getSubimage(176, 0, 16, 16);
+			tile[6].collision = true;
 			
-			tile[4] = new Tile();
-			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-			tile[4].collision = true;
+			tile[7] = new Tile();
+			tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // left water bank
+			tile[7].image = tile[7].image.getSubimage(176, 16, 16, 16);
+			tile[7].collision = true;
+			
+			tile[8] = new Tile();
+			tile[8].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // bottom left corner water
+			tile[8].image = tile[8].image.getSubimage(176, 32, 16, 16);
+			tile[8].collision = true;
+			
 			
 			tile[5] = new Tile();
-			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
-			
-			
+			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); //sand
+			tile[5].image = tile[5].image.getSubimage(48, 0, 16, 16);
 			
 			
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
+	public void setup(int index, String imagePath, boolean collision) {
+		UtilityTool uTool = new UtilityTool();
+		try {
+			tile[index] = new Tile();
+ 			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imagePath + ".png"));
+ 			tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+ 			tile[index].collision = collision;
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	public void loadMap(String filePath) {
 		
@@ -97,8 +154,9 @@ public class TileManager {
 		
 		while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 			
-			int tileNum = mapTileNum[worldCol][worldRow];
 			
+			int tileNum = mapTileNum[worldCol][worldRow];
+		
 			int worldX = worldCol * gp.tileSize;
 			int worldY = worldRow * gp.tileSize;
 			int screenX = worldX - gp.player.worldX + gp.player.screenX;
