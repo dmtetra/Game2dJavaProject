@@ -34,14 +34,16 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	
 	
+	
+	
 	TileManager tileM = new TileManager(this);
-	KeyHandler  keyH = new KeyHandler(this); //not sure why I set this to null, it might break something.
+	KeyHandler  keyH = new KeyHandler(this); 
 	Sound music = new Sound();
 	Sound se= new Sound();
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
-	Thread gameThread;
+	public Thread gameThread;
 	
 	//ENTITY AND OBJECT
 	public Player  player  = new Player(this,keyH);
@@ -51,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public int gameState;
 	public final int playState = 1;
 	public final int pauseState = 2;
+	public final int endState = 3;
 	
 	public GamePanel() {
 		
@@ -94,6 +97,7 @@ public class GamePanel extends JPanel implements Runnable{
 				
 			
 			
+			
 			update();
 			repaint();
 			delta--;
@@ -106,12 +110,14 @@ public class GamePanel extends JPanel implements Runnable{
 				timer = 0;
 			}
 			
+			
 		}
 	}
 	
 	public void update() {
 		
 		if(gameState == playState) {
+			
 			player.update();
 			//NPC 
 			for(int i = 0; i < npc.length; i++) {
@@ -120,9 +126,16 @@ public class GamePanel extends JPanel implements Runnable{
 				}
 			}
 			
+			
+			
 		}
 		if(gameState == pauseState) {
 			//nothing!
+		}
+		
+		if(gameState == endState) {
+			stopMusic();
+			//nothing! game is over
 		}
 	}
 	public void paintComponent(Graphics g) 	{
@@ -151,6 +164,7 @@ public class GamePanel extends JPanel implements Runnable{
 				npc[i].draw(g2);
 			}
 		}
+		
 		
 		//PLAYER
 		player.draw(g2);

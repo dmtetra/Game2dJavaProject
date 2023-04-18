@@ -43,6 +43,7 @@ public class Entity {
 		
 		setAction();
 		
+		
 		collisionOn = false;
 		gp.cChecker.checkTile(this);
 		gp.cChecker.checkObject(this, false);
@@ -58,6 +59,9 @@ public class Entity {
 			}
 		}
 		
+		
+		
+		
 		spriteCounter++;
 		if(spriteCounter > 8) { //change this value to adjust speed of player animation
 			if(spriteNum == 1) {
@@ -69,6 +73,7 @@ public class Entity {
 			spriteCounter = 0;
 		}
 	}
+	
 	public void draw(Graphics2D g2) {
 		
 		BufferedImage image = null;

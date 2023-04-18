@@ -79,7 +79,20 @@ public class UI {
 				g2.setFont(arial_80B);
 				g2.setColor(Color.white);
 				String text = "PAUSED";
-				//int x = getXforCenteredText(text);
+		
+				int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+				int x = gp.screenWidth/2-length/2;
+				
+
+				int y = gp.screenHeight/2;
+				g2.drawString(text, x, y);
+			}
+			
+			if(gp.gameState == gp.endState) {
+				g2.setFont(arial_80B);
+				g2.setColor(Color.white);
+				String text = "You Died";
+		
 				int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 				int x = gp.screenWidth/2-length/2;
 				
@@ -89,9 +102,12 @@ public class UI {
 			}
 			
 			//TIME
-			g2.setFont(arial_40);
-			playTime += (double)1/60;
-			g2.drawString("Time:"+dFormat.format(playTime), gp.tileSize*11, 65);
+			if(gp.gameState == gp.playState) {
+				g2.setFont(arial_40);
+				playTime += (double)1/60;
+				g2.drawString("Time:"+dFormat.format(playTime), gp.tileSize*11, 65);
+			}
+
 			
 			//MESSAGE
 			if(messageOn == true) {

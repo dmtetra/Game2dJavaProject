@@ -154,6 +154,10 @@ public class CollisionChecker {
 					if(entity.solidArea.intersects(target[i].solidArea)) {
 							entity.collisionOn = true;
 							index = i;
+							if(entity.collisionOn == true && gp.npc[i]== gp.npc[1]) {
+								System.out.println("collisions");
+								gp.gameState = gp.endState;
+							}
 					}
 					break;
 				case "down":
@@ -161,6 +165,11 @@ public class CollisionChecker {
 					if(entity.solidArea.intersects(target[i].solidArea)) {
 						entity.collisionOn = true;
 							index = i;
+							if(entity.collisionOn == true && gp.npc[i]== gp.npc[1]) {
+								System.out.println("collisions");
+								gp.gameState = gp.endState;
+							
+							}
 						
 					}
 					break;
@@ -169,6 +178,12 @@ public class CollisionChecker {
 					if(entity.solidArea.intersects(target[i].solidArea)) {
 						entity.collisionOn = true;
 						index = i;
+						if(entity.collisionOn == true && gp.npc[i]== gp.npc[1]) {
+							System.out.println("collisions");
+							gp.gameState = gp.endState;
+
+							
+						}
 					}
 					break;
 				case "right":
@@ -176,6 +191,11 @@ public class CollisionChecker {
 					if(entity.solidArea.intersects(target[i].solidArea)) {
 						entity.collisionOn = true;
 						index = i;
+						if(entity.collisionOn == true && gp.npc[i]== gp.npc[1]) {
+							System.out.println("collisions");
+							gp.gameState = gp.endState;
+							
+						}
 					break;
 				}
 			}
@@ -206,6 +226,7 @@ public class CollisionChecker {
 				entity.solidArea.y -= entity.speed;
 				if(entity.solidArea.intersects(gp.player.solidArea)) {
 						entity.collisionOn = true;
+						System.out.println("collision is true");
 			
 				}
 				break;
@@ -213,7 +234,8 @@ public class CollisionChecker {
 				entity.solidArea.y += entity.speed;
 				if(entity.solidArea.intersects(gp.player.solidArea)) {
 					entity.collisionOn = true;
-	
+					System.out.println("collision is true");
+
 					
 				}
 				break;
@@ -221,6 +243,7 @@ public class CollisionChecker {
 				entity.solidArea.x -= entity.speed;
 				if(entity.solidArea.intersects(gp.player.solidArea)) {
 					entity.collisionOn = true;
+					System.out.println("collision is true");
 
 				}
 				break;
@@ -228,7 +251,8 @@ public class CollisionChecker {
 				entity.solidArea.x += entity.speed;
 				if(entity.solidArea.intersects(gp.player.solidArea)) {
 					entity.collisionOn = true;
-		
+					System.out.println("collision is true");
+
 				break;
 			}
 		}

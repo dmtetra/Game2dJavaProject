@@ -1,5 +1,6 @@
 package main;
 
+import entity.NPC_Monster;
 import entity.NPC_OldMan;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
@@ -52,5 +53,11 @@ public class AssetSetter {
 		gp.npc[0] = new NPC_OldMan(gp);
 		gp.npc[0].worldX = gp.tileSize*21;
 		gp.npc[0].worldY = gp.tileSize*21;
+		
+		gp.npc[1] = new NPC_Monster(gp);
+		gp.npc[1].worldX = gp.tileSize*22;
+		gp.npc[1].worldY = gp.tileSize*22;
+		
 	}
+
 }
