@@ -31,6 +31,9 @@ public class Player extends Entity{
 	
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
+		
+		super(gp);
+		
 		this.gp = gp;
 		this.keyH = keyH;
 		
@@ -60,27 +63,16 @@ public class Player extends Entity{
 	}
 	
 	public void getPlayerImage() { 
-		up1 = setup("boy_up_1");
-		up2 = setup("boy_up_2");
-		down1 = setup("boy_down_1");
-		down2 = setup("boy_down_2");
-		left1 = setup("boy_left_1");
-		left2 = setup("boy_left_2");
-		right1 = setup("boy_right_1");
-		right2 = setup("boy_right_2");
+		up1 = setup("/player/boy_up_1");
+		up2 = setup("/player/boy_up_2");
+		down1 = setup("/player/boy_down_1");
+		down2 = setup("/player/boy_down_2");
+		left1 = setup("/player/boy_left_1");
+		left2 = setup("/player/boy_left_2");
+		right1 = setup("/player/boy_right_1");
+		right2 = setup("/player/boy_right_2");
 	}
-	public BufferedImage setup(String imageName) {
-		UtilityTool uTool = new UtilityTool();
-		BufferedImage image= null;
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/"+ imageName + ".png"));
-			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-			
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-		return image;
-	}
+
 	
 	
 	
@@ -109,6 +101,11 @@ public class Player extends Entity{
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
 			 
+			// CHECK NPC COLLISION
+			
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			interactNPC(npcIndex);
+			
 			// IF COLLLISION IS FALSE, PLAYER CAN MOVE
 			if(collisionOn == false) {
 				switch(direction) {
@@ -180,6 +177,13 @@ public class Player extends Entity{
 			
 		}
 	}
+	
+	public void interactNPC(int i) {
+		if(i != 999) {
+			System.out.println("you are hitting an old man!!!");
+		}
+	}
+	
 	
 	public void draw(Graphics2D g2) {
 //		g2.setColor(Color.white);

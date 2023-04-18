@@ -92,10 +92,34 @@ public class TileManager {
 			tile[8].image = tile[8].image.getSubimage(176, 32, 16, 16);
 			tile[8].collision = true;
 			
+			tile[17] = new Tile();
+			tile[17].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // top water
+			tile[17].image = tile[17].image.getSubimage(192, 0, 16, 16);
+			tile[17].collision = true;
 			
 			tile[5] = new Tile();
 			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); //sand
 			tile[5].image = tile[5].image.getSubimage(48, 0, 16, 16);
+			
+			tile[18] = new Tile();
+			tile[18].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // bottom water
+			tile[18].image = tile[18].image.getSubimage(192, 32, 16, 16);
+			tile[18].collision = true;
+			
+			tile[19] = new Tile();
+			tile[19].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // top left corner water
+			tile[19].image = tile[19].image.getSubimage(208, 0, 16, 16);
+			tile[19].collision = true;
+			
+			tile[20] = new Tile();
+			tile[20].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // top left corner water
+			tile[20].image = tile[20].image.getSubimage(208, 16, 16, 16);
+			tile[20].collision = true;
+			
+			tile[21] = new Tile();
+			tile[21].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Serene_Village_16x16.png")); // top left corner water
+			tile[21].image = tile[21].image.getSubimage(208, 32, 16, 16);
+			tile[21].collision = true;
 			
 			
 		}catch(IOException e) {
